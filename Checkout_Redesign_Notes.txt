@@ -1,0 +1,27 @@
+
+Redesigned Checkout Flow – E-Commerce Website (Desktop)
+
+Original Pain Points:
+---------------------
+1. Multi-page checkout process leads to user frustration and increased dropout.
+2. Users are forced to repeatedly enter the same details (e.g., shipping and billing).
+3. Lack of real-time order summary; total cost often shown at the end.
+4. Unnecessary steps like account creation or captcha interrupt flow.
+5. Forms were cluttered and lacked guidance (e.g., field labels, validation hints).
+
+Redesign Improvements:
+----------------------
+1. All-in-one single-page checkout with clean visual hierarchy.
+2. Clearly separated sections: Shipping Info, Payment Method, and Order Summary.
+3. Real-time order cost shown in a summary box to build user trust.
+4. Intuitive inputs and simplified options (dropdowns, placeholders).
+5. Reduced friction with a single 'Place Order' CTA.
+6. Minimalist design to improve focus and reduce cognitive load.
+7. Responsive layout ready for desktop with accessibility in mind.
+
+Impact:
+-------
+Streamlined checkout reduces user fatigue.
+Higher completion rates.
+Lower cart abandonment.
+Improved accessibility and user satisfaction.
