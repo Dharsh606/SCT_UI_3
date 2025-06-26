@@ -3,99 +3,158 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Redesigned Checkout Flow</title>
+  <title>Multi-Step Checkout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f2f5f9;
       padding: 20px;
-      background-color: #f4f4f4;
     }
     .container {
-      max-width: 900px;
+      max-width: 850px;
       margin: auto;
       background: #fff;
-      padding: 20px;
-      border-radius: 8px;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
     }
     h1 {
       text-align: center;
-      color: #333;
+      color: #222;
+      margin-bottom: 40px;
     }
     .step {
-      margin-bottom: 30px;
+      display: none;
     }
-    .step h2 {
+    .step.active {
+      display: block;
+    }
+    h2 {
       color: #0066cc;
+      margin-bottom: 20px;
+    }
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
     }
     input, select {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
+      flex: 1 1 100%;
+      padding: 12px;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    .summary {
+      background: #e6f0fc;
+      padding: 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .summary p, .summary strong {
+      margin: 6px 0;
+    }
+    .navigation-buttons {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
     }
     .btn {
       background-color: #0066cc;
       color: white;
-      padding: 12px 20px;
+      padding: 12px 24px;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
+      font-size: 1rem;
     }
     .btn:hover {
-      background-color: #004999;
+      background-color: #004a99;
     }
-    .summary {
-      background: #eaf2fb;
-      padding: 15px;
-      border-radius: 6px;
+    @media (min-width: 600px) {
+      .input-group input, .input-group select {
+        flex: 1 1 48%;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Streamlined Checkout Flow</h1>
+    <h1>🛒 Secure Checkout</h1>
 
-    <div class="step">
-      <h2>1. Shipping Information</h2>
-      <input type="text" placeholder="Full Name" />
-      <input type="text" placeholder="Address Line 1" />
-      <input type="text" placeholder="City" />
-      <input type="text" placeholder="Zip/Postal Code" />
-      <select>
-        <option>Country</option>
-        <option>India</option>
-        <option>USA</option>
-        <option>UK</option>
-      </select>
-    </div>
-
-    <div class="step">
-      <h2>2. Payment Method</h2>
-      <select>
-        <option>Select Payment Option</option>
-        <option>Credit/Debit Card</option>
-        <option>UPI</option>
-        <option>Net Banking</option>
-      </select>
-      <input type="text" placeholder="Card Number / UPI ID" />
-      <input type="text" placeholder="Expiry Date (MM/YY)" />
-      <input type="text" placeholder="CVV" />
-    </div>
-
-    <div class="step">
-      <h2>3. Order Summary</h2>
-      <div class="summary">
-        <p>Product: RC Super Car x1</p>
-        <p>Price: ₹3,999</p>
-        <p>Shipping: ₹99</p>
-        <hr>
-        <strong>Total: ₹4,098</strong>
+    <div class="step active" id="step-1">
+      <h2>📦 1. Shipping Information</h2>
+      <div class="input-group">
+        <input type="text" placeholder="Full Name" />
+        <input type="text" placeholder="Address Line 1" />
+        <input type="text" placeholder="City" />
+        <input type="text" placeholder="Zip/Postal Code" />
+        <select>
+          <option selected disabled>Country</option>
+          <option>India</option>
+          <option>USA</option>
+          <option>UK</option>
+        </select>
       </div>
     </div>
 
-    <button class="btn">Place Order</button>
+    <div class="step" id="step-2">
+      <h2>💳 2. Payment Method</h2>
+      <div class="input-group">
+        <select>
+          <option selected disabled>Select Payment Option</option>
+          <option>Credit/Debit Card</option>
+          <option>UPI</option>
+          <option>Net Banking</option>
+        </select>
+        <input type="text" placeholder="Card Number / UPI ID" />
+        <input type="text" placeholder="Expiry Date (MM/YY)" />
+        <input type="text" placeholder="CVV" />
+      </div>
+    </div>
+
+    <div class="step" id="step-3">
+      <h2>🧾 3. Order Summary</h2>
+      <div class="summary">
+        <p>Product: <strong>RC Super Car x1</strong></p>
+        <p>Price: ₹3,999</p>
+        <p>Shipping: ₹99</p>
+        <hr>
+        <p><strong>Total: ₹4,098</strong></p>
+      </div>
+    </div>
+
+    <div class="navigation-buttons">
+      <button class="btn" id="backBtn" onclick="changeStep(-1)" style="display: none;">Back</button>
+      <button class="btn" id="nextBtn" onclick="changeStep(1)">Next</button>
+    </div>
   </div>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 3;
+
+    function showStep(step) {
+      for (let i = 1; i <= totalSteps; i++) {
+        document.getElementById('step-' + i).classList.remove('active');
+      }
+      document.getElementById('step-' + step).classList.add('active');
+
+      document.getElementById('backBtn').style.display = step > 1 ? 'inline-block' : 'none';
+      document.getElementById('nextBtn').textContent = step === totalSteps ? 'Place Order' : 'Next';
+    }
+
+    function changeStep(direction) {
+      currentStep += direction;
+      if (currentStep > totalSteps) {
+        alert("✅ Order Placed Successfully!");
+        currentStep = totalSteps;
+      }
+      showStep(currentStep);
+    }
+
+    showStep(currentStep);
+  </script>
 </body>
 </html>
